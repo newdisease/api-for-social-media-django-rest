@@ -1,4 +1,7 @@
 # Byte-compiled / optimized / DLL files
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
 staticfiles/
 .idea
 __pycache__/
