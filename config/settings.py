@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # 3rd-party
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
 
     # Local
     'posts.apps.PostsConfig',
