@@ -7,7 +7,7 @@ app_name = 'posts'
 router = SimpleRouter()
 
 router.register(r'posts', PostViewSet)
-router.register(r'posts-relation', FavouritePostView)
+router.register(r'like', FavouritePostView)
 
 urlpatterns = []
 

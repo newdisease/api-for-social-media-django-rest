@@ -5,7 +5,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from posts.models import Post
+from posts.models import Post, FavouritePost
 from posts.serializers import PostSerializer
 
 
@@ -56,7 +56,6 @@ class PostsApiTestCase(APITestCase):
         }
         json_data = json.dumps(data)
         response = self.client.put(url, data=json_data, content_type='application/json')
-        print(1, url, 2, json_data, self.client.cookies)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.post1.refresh_from_db()
         self.assertEqual("test1 UPDATED", self.post1.title)
@@ -91,3 +90,24 @@ class PostsApiTestCase(APITestCase):
         response = self.client.delete(url, content_type='application/json')
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
         self.assertEqual(3, Post.objects.all().count())
+
+
+class FavouritePostApiTestCase(APITestCase):
+    def setUp(self):
+        # authors
+        self.author1 = User.objects.create(username='testuser1')
+        self.author2 = User.objects.create(username='testuser2')
+        self.author3 = User.objects.create(username='testuser3')
+        # posts
+        self.post1 = Post.objects.create(author_id=self.author1.id, title='test1', body='test123')
+        self.post2 = Post.objects.create(author_id=self.author1.id, title='test2', body='test1234')
+        self.post3 = Post.objects.create(author_id=self.author1.id, title='test3', body='test12345')
+
+    def test_like_post(self):
+        url = reverse('posts:favouritepost-detail', args=(self.post1.id,))
+        self.client.force_authenticate(self.author1)
+        response = self.client.patch(url, content_type='application/json')
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.post1.refresh_from_db()
+        relation = FavouritePost.objects.get(user=self.author1, post=self.post1)
+        self.assertTrue(relation.like)

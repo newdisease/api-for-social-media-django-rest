@@ -1,5 +1,10 @@
+import json
+
+from django.http import JsonResponse
+from requests import Response
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import raise_errors_on_nested_writes
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from posts.models import Post, FavouritePost
@@ -31,3 +36,7 @@ class FavouritePostView(UpdateModelMixin, GenericViewSet):
             post_id=self.kwargs['post']
         )
         return obj
+
+    def perform_update(self, serializer):
+        fav_post = self.get_object()
+        serializer.save(like=not bool(fav_post.like))

@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, raise_errors_on_nested_writes
+from rest_framework.utils import model_meta
 
 from posts.models import Post, FavouritePost
 
@@ -21,4 +22,4 @@ class FavouritePostSerializer(ModelSerializer):
     """Like serializer"""
     class Meta:
         model = FavouritePost
-        fields = ('like',)
+        fields = ('post', 'like',)

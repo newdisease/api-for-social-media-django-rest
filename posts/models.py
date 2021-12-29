@@ -20,4 +20,9 @@ class FavouritePost(models.Model):
     like = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'post'], name='unique-like'),
+        ]
+
     def __str__(self): return f'{self.user.username}: {self.post.title}'
