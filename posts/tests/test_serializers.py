@@ -1,5 +1,7 @@
+from django.db.models import Count, Case, When
 from django.test import TestCase
 from django.contrib.auth.models import User
+from unittest.mock import ANY
 
 from posts.models import Post, FavouritePost
 from posts.serializers import PostSerializer
@@ -23,23 +25,25 @@ class PostSerializerTestCase(TestCase):
         FavouritePost.objects.create(user=author2, post=post2, like=True)
         FavouritePost.objects.create(user=author3, post=post2, like=False)
 
-        data = PostSerializer([post1, post2], many=True).data
+        posts = Post.objects.all().annotate(
+            likes_count=Count(Case(When(favouritepost__like=True, then=1)))).order_by('id')
+        data = PostSerializer(posts, many=True).data
         expected_data = [
             {
                 'id': post1.id,
                 'title': 'test1',
                 'body': 'test123',
                 'author': 'testuser1',
-                'created_at': post1.created_at.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
-                'likes_count': 3
+                'created_at': ANY,
+                'likes_count': 3,
             },
             {
                 'id': post2.id,
                 'title': 'test2',
                 'body': 'test1234',
                 'author': 'testuser1',
-                'created_at': post2.created_at.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
-                'likes_count': 2
+                'created_at': ANY,
+                'likes_count': 2,
             }
         ]
         self.assertEqual(expected_data, data)

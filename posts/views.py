@@ -1,10 +1,6 @@
-import json
-
-from django.http import JsonResponse
-from requests import Response
+from django.db.models import Count, Case, When
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.serializers import raise_errors_on_nested_writes
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from posts.models import Post, FavouritePost
@@ -14,7 +10,8 @@ from posts.serializers import PostSerializer, FavouritePostSerializer
 
 class PostViewSet(ModelViewSet):
     """Post-list & post-detail views"""
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().annotate(
+            likes_count=Count(Case(When(favouritepost__like=True, then=1)))).order_by('id')
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrReadOnly]
 

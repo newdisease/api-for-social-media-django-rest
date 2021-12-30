@@ -1,11 +1,10 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
-from users.views import RegisterView
+from users.views import RegisterView, LoginView
 
 app_name = 'users'
 

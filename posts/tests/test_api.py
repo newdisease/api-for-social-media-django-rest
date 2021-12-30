@@ -1,6 +1,7 @@
 import json
-
+from unittest.mock import ANY
 from django.contrib.auth.models import User
+from django.db.models import Count, Case, When
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -23,16 +24,23 @@ class PostsApiTestCase(APITestCase):
     def test_get_all_posts(self):
         url = reverse('posts:post-list')
         response = self.client.get(url)
-        serializer_data = PostSerializer([self.post1, self.post2, self.post3], many=True).data
+        posts = Post.objects.all().annotate(
+            likes_count=Count(Case(When(favouritepost__like=True, then=1)))).order_by('id')
+        serializer_data = PostSerializer(posts, many=True).data
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(serializer_data, response.data)
 
     def test_get_one_posts(self):
         url = reverse('posts:post-detail', args=(self.post1.id,))
         response = self.client.get(url)
-        serializer_data = PostSerializer(self.post1).data
         self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual(serializer_data, response.data)
+        self.assertEqual({'id': 1,
+                          'title': 'test1',
+                          'body': 'test123',
+                          'author': 'testuser1',
+                          'created_at': ANY,
+                          'likes_count': 0
+                          }, response.data)
 
     def test_create_post(self):
         self.assertEqual(3, Post.objects.all().count())

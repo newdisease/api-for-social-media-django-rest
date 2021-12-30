@@ -148,3 +148,5 @@ REST_FRAMEWORK = {
 }
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
+SIMPLE_JWT = {'UPDATE_LAST_LOGIN': True}
