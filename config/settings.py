@@ -95,32 +95,32 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-        'default': {
-            'ENGINE': os.environ.get('DATABASE_ENGINE'),
-            'NAME': os.environ.get('DATABASE_NAME'),
-            'USER': os.environ.get('DATABASE_USER'),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-            'HOST': os.environ.get('DATABASE_HOST'),
-            'PORT': os.environ.get('DATABASE_PORT'),
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.environ.get('DATABASE_HOST'),
+        'PORT': '5432'
+    }
 }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+{
+    'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+},
+{
+    'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+},
+{
+    'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+},
+{
+    'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+},
 ]
 
 # Internationalization
@@ -147,23 +147,23 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    ),
-    'DEFAULT_PARSER_CLASSES': (
-        'rest_framework.parsers.JSONParser',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+'DEFAULT_RENDERER_CLASSES': (
+    'rest_framework.renderers.JSONRenderer',
+),
+'DEFAULT_PARSER_CLASSES': (
+    'rest_framework.parsers.JSONParser',
+),
+'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+)
 }
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 SIMPLE_JWT = {
-    'UPDATE_LAST_LOGIN': True,
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+'UPDATE_LAST_LOGIN': True,
+'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
 
