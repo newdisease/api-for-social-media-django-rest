@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+import django_heroku
 import environ
 import os
 
@@ -59,6 +60,7 @@ INTERNAL_IPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -163,3 +165,9 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
