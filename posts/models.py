@@ -3,7 +3,6 @@ from django.db import models
 
 
 class Post(models.Model):
-    """Posts model"""
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='my_post')
     title = models.CharField(max_length=100)
     body = models.TextField()

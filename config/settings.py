@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import environ
 import os
 
@@ -124,7 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
@@ -156,4 +158,8 @@ REST_FRAMEWORK = {
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
-SIMPLE_JWT = {'UPDATE_LAST_LOGIN': True}
+SIMPLE_JWT = {
+    'UPDATE_LAST_LOGIN': True,
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}

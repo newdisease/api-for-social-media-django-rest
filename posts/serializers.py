@@ -5,7 +5,7 @@ from posts.models import Post, FavouritePost
 
 
 class PostSerializer(ModelSerializer):
-    """Post-list & post-detail serializers"""
+    """PostViewSet serializers"""
     author = serializers.StringRelatedField()
     likes_count = serializers.IntegerField(read_only=True)
 
