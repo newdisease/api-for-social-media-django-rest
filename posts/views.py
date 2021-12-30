@@ -11,7 +11,7 @@ from posts.serializers import PostSerializer, FavouritePostSerializer
 class PostViewSet(ModelViewSet):
     """Post-list & post-detail views"""
     queryset = Post.objects.all().annotate(
-            likes_count=Count(Case(When(favouritepost__like=True, then=1)))).order_by('id')
+            likes_count=Count(Case(When(favouritepost__like=True, then=1)))).select_related('author').order_by('id')
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrReadOnly]
 
