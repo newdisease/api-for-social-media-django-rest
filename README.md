@@ -2,7 +2,7 @@
 
 > Simple API for some social network. Implemented with Django Rest Framework
 
-[Here](https://#) you can find the deployed project
+[Here](https://https://starnavibook-api.herokuapp.com) you can find the deployed project
 
 ## Start project
 * `git clone https://repo.url` - clone repo
@@ -14,4 +14,4 @@
 
 ## API endpoints
 
-You can find detail documentation [Here](https://#)
+You can find detail documentation (Swagger) [Here](https://https://starnavibook-api.herokuapp.com/swagger/)
