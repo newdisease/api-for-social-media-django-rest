@@ -34,7 +34,7 @@ class PostsApiTestCase(APITestCase):
         url = reverse('posts:post-detail', args=(self.post1.id,))
         response = self.client.get(url)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual({'id': 1,
+        self.assertEqual({'id': self.post1.id,
                           'title': 'test1',
                           'body': 'test123',
                           'author': 'testuser1',

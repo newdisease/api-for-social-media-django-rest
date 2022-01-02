@@ -67,6 +67,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'users.middleware.JWTAuthenticationInMiddleware',
+    'users.middleware.SetLastVisitMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'debug_toolbar_force.middleware.ForceDebugToolbarMiddleware',
 ]
@@ -109,18 +111,18 @@ DATABASES = {
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-{
-    'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-},
-{
-    'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-},
-{
-    'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-},
-{
-    'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
 # Internationalization
@@ -147,25 +149,24 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-'DEFAULT_RENDERER_CLASSES': (
-    'rest_framework.renderers.JSONRenderer',
-),
-'DEFAULT_PARSER_CLASSES': (
-    'rest_framework.parsers.JSONParser',
-),
-'DEFAULT_AUTHENTICATION_CLASSES': (
-    'rest_framework_simplejwt.authentication.JWTAuthentication',
-)
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 SIMPLE_JWT = {
-'UPDATE_LAST_LOGIN': True,
-'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
-'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'UPDATE_LAST_LOGIN': True,
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
-
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 

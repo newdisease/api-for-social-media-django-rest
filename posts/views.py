@@ -6,6 +6,7 @@ from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from posts.models import Post, FavouritePost
 from posts.permissions import IsAuthorOrReadOnly
@@ -18,6 +19,7 @@ class PostViewSet(ModelViewSet):
         likes_count=Count(Case(When(favouritepost__like=True, then=1)))).select_related('author').order_by('id')
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrReadOnly]
+    authentication_classes = [JWTAuthentication]
 
     def perform_create(self, serializer):
         serializer.validated_data['author'] = self.request.user
