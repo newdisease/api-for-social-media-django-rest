@@ -3,6 +3,7 @@ from django.db import models
 
 
 class Post(models.Model):
+    """Post model"""
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='my_post')
     title = models.CharField(max_length=100)
     body = models.TextField()
@@ -14,6 +15,7 @@ class Post(models.Model):
 
 
 class FavouritePost(models.Model):
+    """Post's like & unlike model"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     like = models.BooleanField(default=False)

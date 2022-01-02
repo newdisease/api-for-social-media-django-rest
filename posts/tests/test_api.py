@@ -8,6 +8,8 @@ from rest_framework.test import APITestCase
 
 from posts.models import Post, FavouritePost
 from posts.serializers import PostSerializer
+from users.models import UserActivity
+from users.serializers import UserActivitySerializer
 
 
 class PostsApiTestCase(APITestCase):
@@ -119,3 +121,30 @@ class FavouritePostApiTestCase(APITestCase):
         self.post1.refresh_from_db()
         relation = FavouritePost.objects.get(user=self.author1, post=self.post1)
         self.assertTrue(relation.like)
+
+    def test_get_analytics(self):
+        url = reverse('posts:like-analytics')
+        response = self.client.get(url, data={'date_from': '2010-12-12'})
+
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual({"likes-stat": 0}, response.data)
+
+
+class UserActivityTestCase(APITestCase):
+    def setUp(self):
+        # authors
+        self.author1 = User.objects.create(username='testuser1')
+        self.author2 = User.objects.create(username='testuser2')
+        self.author3 = User.objects.create(username='testuser3')
+        # posts
+        self.post1 = Post.objects.create(author_id=self.author1.id, title='test1', body='test123')
+        self.post2 = Post.objects.create(author_id=self.author1.id, title='test2', body='test1234')
+        self.post3 = Post.objects.create(author_id=self.author1.id, title='test3', body='test12345')
+
+    def test_get_user_activity(self):
+        url = reverse('users:useractivity-list')
+        response = self.client.get(url)
+        users = UserActivity.objects.all()
+        serializer_data = UserActivitySerializer(users, many=True).data
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(serializer_data, response.data)

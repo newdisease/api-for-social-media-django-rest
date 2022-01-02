@@ -5,8 +5,9 @@ from django.dispatch import receiver
 
 
 class UserActivity(models.Model):
+    """Information about the last activity for each authorized user"""
     username = models.OneToOneField(User, on_delete=models.CASCADE)
-    last_visit = models.DateTimeField(null=True, blank=True)
+    last_request = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.username.username

@@ -11,7 +11,7 @@ router.register(r'posts', PostViewSet)
 router.register(r'like', FavouritePostView)
 
 urlpatterns = [
-    path('analytics/', LikesAnalyticsView.as_view()),
+    path('analytics/', LikesAnalyticsView.as_view(), name='like-analytics'),
 ]
 
 urlpatterns += router.urls

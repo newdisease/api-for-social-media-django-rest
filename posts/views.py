@@ -3,10 +3,9 @@ import datetime
 from django.db.models import Count, Case, When
 from rest_framework import views
 from rest_framework.mixins import UpdateModelMixin
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from posts.models import Post, FavouritePost
 from posts.permissions import IsAuthorOrReadOnly
@@ -14,12 +13,15 @@ from posts.serializers import PostSerializer, FavouritePostSerializer
 
 
 class PostViewSet(ModelViewSet):
-    """CRUD functional for posts"""
+    """
+    Post view set
+        post-list: queryset
+        post-detail: object
+    """
     queryset = Post.objects.all().annotate(
         likes_count=Count(Case(When(favouritepost__like=True, then=1)))).select_related('author').order_by('id')
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrReadOnly]
-    authentication_classes = [JWTAuthentication]
 
     def perform_create(self, serializer):
         serializer.validated_data['author'] = self.request.user
@@ -27,7 +29,10 @@ class PostViewSet(ModelViewSet):
 
 
 class FavouritePostView(UpdateModelMixin, GenericViewSet):
-    """Makes like and unlike to post"""
+    """
+    Sends like and unlike to post
+        neet to use PATCH method
+    """
     permission_classes = [IsAuthenticated]
     queryset = FavouritePost.objects.all()
     serializer_class = FavouritePostSerializer
@@ -46,7 +51,9 @@ class FavouritePostView(UpdateModelMixin, GenericViewSet):
 
 
 class LikesAnalyticsView(views.APIView):
-    """Shows likes in date range"""
+    """
+    Shows likes in date range or from the date to the present time
+    """
 
     def get(self, request):
         date_from = self.request.GET.get('date_from')

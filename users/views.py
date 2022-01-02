@@ -1,28 +1,29 @@
-import datetime
-
 from django.contrib.auth.models import User
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenViewBase
+from rest_framework.viewsets import GenericViewSet
 
-from .serializers import RegisterSerializer
-from rest_framework import generics, status
+from .models import UserActivity
+from .serializers import RegisterSerializer, UserActivitySerializer
+from rest_framework import generics
 
 
 class RegisterView(generics.CreateAPIView):
-    """Registration view"""
+    """
+    Registration view
+    """
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
 
-class LoginView(TokenObtainPairView):
-    """Login view"""
+class UserActivityView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    """
+    User's last login & last activity view set
 
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        if response.status_code == status.HTTP_200_OK:
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid()
-            serializer.user.last_login = datetime.datetime.now()
-            serializer.user.save()
-        return response
+        user-activity-list: queryset
+        user-activity-detail: object
+    """
+    queryset = UserActivity.objects.all().select_related('username').order_by('id')
+    serializer_class = UserActivitySerializer
+    permission_classes = [AllowAny]

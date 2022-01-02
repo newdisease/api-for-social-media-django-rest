@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework.serializers import ModelSerializer
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+
+from users.models import UserActivity
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -31,3 +34,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class UserActivitySerializer(ModelSerializer):
+    """User's last activity serializer"""
+    username = serializers.StringRelatedField()
+    last_login = serializers.CharField(source='username.last_login')
+
+    class Meta:
+        model = UserActivity
+        fields = ('id', 'username', 'last_login', 'last_request')

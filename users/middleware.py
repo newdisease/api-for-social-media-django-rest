@@ -9,6 +9,7 @@ from users.models import UserActivity
 
 
 class JWTAuthenticationInMiddleware(MiddlewareMixin):
+    """Defines user.is_authenticated if the user is authenticated with a JWT token"""
 
     def __call__(self, request):
         request.user = SimpleLazyObject(lambda: self.__class__.get_jwt_user(request))
@@ -26,6 +27,7 @@ class JWTAuthenticationInMiddleware(MiddlewareMixin):
 
 
 class SetLastVisitMiddleware(MiddlewareMixin):
+    """Tracks the user's last activity, updates the date in the LastActivity table"""
 
     def __call__(self, request):
         if request.user.is_authenticated:
@@ -34,7 +36,7 @@ class SetLastVisitMiddleware(MiddlewareMixin):
             if not last_activity or last_activity < date_now:
                 UserActivity.objects.filter(
                     username_id=request.user.id
-                ).update(last_visit=timezone.now())
+                ).update(last_request=timezone.now())
             request.session['last-activity'] = timezone.now().isoformat()
 
         return self.get_response(request)
