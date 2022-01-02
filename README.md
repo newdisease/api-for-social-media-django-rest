@@ -1,4 +1,4 @@
-# Fishi
+# Starnavibook-api
 
 > Simple API for some social network. Implemented with Django Rest Framework
 
@@ -13,7 +13,7 @@ or `?date_fromYYYY-MM-DD` if you want to check likes to the present time
 * `git clone https://repo.url` - clone repo
 * `virtualenv venv --python=/path/to/python` - configure virtual environment
 * `pip install -r requirements.txt` - install requirements
-* `create and configure .env file` - set secret settings (check .env.example)
+* `create and configure .env file` - set secret settings (check **.env.example** here: ../config)
 * `python manage.py migrate` - initiate db
 * `python manage.py createsuperuser` - create superuser
 * `python manage.py runserver` - run development server
