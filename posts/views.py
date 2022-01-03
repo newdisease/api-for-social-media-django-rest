@@ -54,7 +54,6 @@ class LikesAnalyticsView(views.APIView):
     """
     Shows likes in date range or from the date to the present time
     """
-
     def get(self, request):
         date_from = self.request.GET.get('date_from')
         date_to = self.request.GET.get('date_to')

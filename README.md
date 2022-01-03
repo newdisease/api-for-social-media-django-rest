@@ -2,7 +2,7 @@
 
 > Simple API for some social network. Implemented with Django Rest Framework
 
-[Here](https://https://starnavibook-api.herokuapp.com) you can find the deployed project
+[Here](https://starnavibook-api.herokuapp.com) you can find the deployed project
 
 For checking SQL-queries simply add `?debug-toolbar` after the url in your browser
 
@@ -20,4 +20,4 @@ or `?date_fromYYYY-MM-DD` if you want to check likes to the present time
 
 ## API endpoints
 
-You can find detail documentation (Swagger) [Here](https://https://starnavibook-api.herokuapp.com/swagger/)
+[Here](https://starnavibook-api.herokuapp.com/swagger/) you can find detail documentation (Swagger) 
